@@ -1,0 +1,24 @@
+SC/MP calling conventions:
+
+- P0 stores the program counter
+- P1 is used as a jumppad and a general purpose pointer
+- P2 serves as a stack
+- P3 holds the interrupt handler address
+
+AC and P1 are never preserved!
+
+P1 and E may or may not be preserved after subroutine calls,
+and E is used for return values (P1 for 16-bit ones).
+
+  ; Calling test:
+  js test
+done:
+  jmp done
+
+  ; Push onto the stack the sum of the first two arguments
+test:
+  ld @1(p2)
+  ccl
+  add @1(p2)
+  st @-1(p2)
+  ret p1
